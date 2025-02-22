@@ -1,4 +1,5 @@
 #include <iostream>
+#include <conio.h>
 #include <cstdlib>
 #include <ctime>
 #include <cctype>
@@ -6,6 +7,7 @@
 using namespace std;
 
 bool loggingEnabled = false;
+bool continueGame = true;
 
 void logArray(int array[], int arraySize); // Декларація функції logArray
 void logMessage(const string & message); // Декларація функції logMessage
@@ -22,15 +24,24 @@ class PlayerScore { // Клас для рахунку гравця
 };
 
 int main() {
-    char choice;
-    cout << "Почати грати? (y - без логів, d - з логами): ";
-    cin >> choice;
+    while (continueGame) {
+        cout << "Почати грати? (d - з логами, будь-яка інша клавіша - без логів): ";
+        char choice = _getch();
+        cout << choice << endl;
 
-    if (tolower(choice) == 'd') {
-        loggingEnabled = true;
-}
+        loggingEnabled = (tolower(choice) == 'd');
 
-    gamePrepare(); // Виклик функції gamePrepare
+        gamePrepare();
+
+        cout << "Продовжити грати? (q - закінчити, будь-яка інша клавіша - продовжити): ";
+        choice = _getch();
+        cout << choice << endl;
+
+        if (tolower(choice) == 'q') {
+            continueGame = false;
+        }
+    }
+
     return 0;
 }
 
