@@ -1,8 +1,11 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <cctype>
 
 using namespace std;
+
+bool loggingEnabled = false;
 
 void logArray(int array[], int arraySize); // Декларація функції logArray
 void logMessage(const string & message); // Декларація функції logMessage
@@ -19,6 +22,14 @@ class PlayerScore { // Клас для рахунку гравця
 };
 
 int main() {
+    char choice;
+    cout << "Почати грати? (y - без логів, d - з логами): ";
+    cin >> choice;
+
+    if (tolower(choice) == 'd') {
+        loggingEnabled = true;
+}
+
     gamePrepare(); // Виклик функції gamePrepare
     return 0;
 }
@@ -60,11 +71,14 @@ void logArray(int array[], int arraySize) {
     logMessage(log);
 }
 
-void logMessage(const string& message) { // Реалізація функції logMessage
-    // Отримуємо поточний час за допомогою ctime
-    time_t now = time(0);  // Отримуємо поточний час
-    char* dt = ctime(&now); // Перетворюємо час на строку
+void logMessage(const string& message) {
+    if (!loggingEnabled) return;
 
-    // Виводимо час та повідомлення
-    cout << "[" << dt << "] " << message << endl;
+    time_t now = time(0);
+    tm* localTime = localtime(&now);
+
+    char buffer[100];
+    strftime(buffer, sizeof(buffer), "%a %b %d %H:%M:%S %Y", localTime);
+
+    cout << "[" << buffer << "] " << message << endl;
 }
