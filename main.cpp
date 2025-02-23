@@ -52,12 +52,15 @@ int main() {
                 int playerTask; // Змінна для завдання гравцю (ВИПАДКОВЕ ЧИСЛО)
                 char actionsList[] = {'+', '-', '*', '/'}; // Масив з діями
                 int randomAction = rand() % 4; // Випадкова дія (з масиву)
-                if (randomAction == 2){
-                    playerTask = rand() % 5 + 1; //TODO: ПЕРЕВІРКА НА ДІЛЕННЯ НАЦІЛО
+                if (randomAction == 0 || randomAction == 1){
+                    playerTask = rand() % 100 + 1;
+                } else if (randomAction == 2){
+                    playerTask = rand() % 5 + 1;
                 } else if (randomAction == 3){
                     playerTask = rand() % 5 + 1;
-                } else if (randomAction == 0 || randomAction == 1){
-                    playerTask = rand() % 100 + 1;
+                    while (playerNumber % playerTask != 0) {
+                        playerTask = rand() % 5 + 1;
+                    }
                 }
                 cout << actionsList[randomAction] << playerTask << endl; // РОЗГЛЯНУТО ЛИШЕ ДОДАВАННЯ І ВІДНІМАННЯ
                 cout << "Введіть відповідь: \n";
@@ -82,6 +85,7 @@ int main() {
                 if (suggestAnswer == correctAnswer) {
                     cout << "Відповідь вірна!" << endl;
                     score.GainScore(1);
+                    logMessage("gained score: " + to_string(score.gameScore));
                     correctAnswer == playerNumber;
                 } else {
                     cout << "Відповідь невірна!" << endl;
