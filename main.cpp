@@ -44,7 +44,26 @@ int main() {
         logMessage("player number created = " + to_string(playerNumber));
 
         cout << "Запам'ятайте це число: " + to_string(playerNumber)<< endl;
-        cout << _getch() << endl;        
+        cout << _getch() << endl;
+        
+        // GAME LOOP
+        int actions[+,-,*,/];
+
+        bool correctAnswer = true;
+            while(correctAnswer) {
+                int  playerTask;
+                int randomAction = rand() % 4;
+                if (randomAction == 2){
+                    playerTask = rand() % 5 + 1; //TODO: ПЕРЕВІРКА НА ДІЛЕННЯ
+                }; 
+                else if (randomAction == 3){
+                    playerTask = rand() % 5 + 1;
+                };
+                else if (randomAction == 0 && randomAction == 1){
+                    playerTask = rand() % 100 + 1;
+                };
+            };
+
 
         cout << "Продовжити грати? (q - закінчити, будь-яка інша клавіша - продовжити): ";
         choice = _getch();
