@@ -1,5 +1,4 @@
 #include <iostream>
-#include <conio.h>
 #include <cstdlib>
 #include <ctime>
 #include <cctype>
@@ -24,9 +23,9 @@ class PlayerScore { // Клас для рахунку гравця
 
 int main() {
     while (continueGame) {
+        char choice;
         cout << "Почати грати? (d - з логами, будь-яка інша клавіша - без логів): ";
-        char choice = _getch();
-        cout << choice << endl;
+        cin >> choice;
 
         loggingEnabled = (tolower(choice) == 'd');
 
@@ -44,30 +43,55 @@ int main() {
         logMessage("player number created = " + to_string(playerNumber));
 
         cout << "Запам'ятайте це число: " + to_string(playerNumber)<< endl;
-        cout << _getch() << endl;
+        cin.ignore();
+        cin.get();
         
         // GAME LOOP
-        int actions[+,-,*,/];
-
-        bool correctAnswer = true;
-            while(correctAnswer) {
-                int  playerTask;
-                int randomAction = rand() % 4;
+        bool isCorrectAnswer = true;
+            while(isCorrectAnswer) {
+                int playerTask; // Змінна для завдання гравцю (ВИПАДКОВЕ ЧИСЛО)
+                char actionsList[] = {'+', '-', '*', '/'}; // Масив з діями
+                int randomAction = rand() % 4; // Випадкова дія (з масиву)
                 if (randomAction == 2){
-                    playerTask = rand() % 5 + 1; //TODO: ПЕРЕВІРКА НА ДІЛЕННЯ
-                }; 
-                else if (randomAction == 3){
+                    playerTask = rand() % 5 + 1; //TODO: ПЕРЕВІРКА НА ДІЛЕННЯ НАЦІЛО
+                } else if (randomAction == 3){
                     playerTask = rand() % 5 + 1;
-                };
-                else if (randomAction == 0 && randomAction == 1){
+                } else if (randomAction == 0 || randomAction == 1){
                     playerTask = rand() % 100 + 1;
-                };
+                }
+                cout << actionsList[randomAction] << playerTask << endl; // РОЗГЛЯНУТО ЛИШЕ ДОДАВАННЯ І ВІДНІМАННЯ
+                cout << "Введіть відповідь: \n";
+                int suggestAnswer; // Відповідь гравця
+                int correctAnswer; // Правильна відповідь
+                switch (randomAction) {
+                    case 0: // Додавання
+                        correctAnswer = playerNumber + playerTask;
+                        break;
+                    case 1: // Віднімання
+                        correctAnswer = playerNumber - playerTask;
+                        break;
+                    case 2: // Множення
+                        correctAnswer = playerNumber * playerTask;
+                        break;
+                    case 3: // Ділення
+                        correctAnswer = playerNumber / playerTask;
+                        break;
+                }
+                logMessage("correct answer: " + to_string(correctAnswer));
+                cin >> suggestAnswer;
+                if (suggestAnswer == correctAnswer) {
+                    cout << "Відповідь вірна!" << endl;
+                    score.GainScore(1);
+                    correctAnswer == playerNumber;
+                } else {
+                    cout << "Відповідь невірна!" << endl;
+                    isCorrectAnswer = false;
+                }
             };
 
-
+        cout << "Кінець. Рахунок гравця: " << score.gameScore << endl;
         cout << "Продовжити грати? (q - закінчити, будь-яка інша клавіша - продовжити): ";
-        choice = _getch();
-        cout << choice << endl;
+        cin >> choice;
 
         if (tolower(choice) == 'q') {
             continueGame = false;
@@ -76,17 +100,6 @@ int main() {
 
     return 0;
 }
-
-                                        // NUMBERS ARRAY
-                                        // int const arraySize = 100;
-                                        // int numbersArray[arraySize];
-
-                                        // for (int i = 0; i < arraySize; i++) {
-                                        //    numbersArray[i] = rand() % 100;
-                                        //    logMessage("number created in array at index " + to_string(i) + ": " + to_string(numbersArray[i]));
-                                        //};
-
-                                        //logArray(numbersArray, arraySize);
 
 void logArray(int array[], int arraySize) {
     string log = "numbers array: ";
