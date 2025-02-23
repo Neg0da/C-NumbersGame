@@ -6,10 +6,10 @@
 using namespace std;
 
 bool loggingEnabled = false;
+bool continueGame = true;
 
 void logArray(int array[], int arraySize); // Декларація функції logArray
 void logMessage(const string & message); // Декларація функції logMessage
-void gamePrepare(); // Декларація функції gamePrepare
 
 class PlayerScore { // Клас для рахунку гравця
     public:
@@ -22,42 +22,83 @@ class PlayerScore { // Клас для рахунку гравця
 };
 
 int main() {
-    char choice;
-    cout << "Почати грати? (y - без логів, d - з логами): ";
-    cin >> choice;
+    while (continueGame) {
+        char choice;
+        cout << "Почати грати? (d - з логами, будь-яка інша клавіша - без логів): ";
+        cin >> choice;
 
-    if (tolower(choice) == 'd') {
-        loggingEnabled = true;
-}
+        loggingEnabled = (tolower(choice) == 'd');
 
-    gamePrepare(); // Виклик функції gamePrepare
+        // SEED
+        int seed = time(0); // Задаємо значенню seed значення часу.
+        srand(seed); // Зерно для генерації випадкових чисел.
+        logMessage("random seed = " + to_string(seed)); // Виводимо випадкове зерно.
+
+        // SCORE PREPARE
+        PlayerScore score; // Створюємо об'єкт score класу PlayerScore, який містить рахунок гравця. 
+        logMessage("game score initialized: " + to_string(score.gameScore));
+
+        // FIRST NUMBER PREPARE
+        int playerNumber = rand() % 100 + 1; // Створює число для гравця, яке спочатку від 0 до 99(включно), а потім додається 1, аби не було 0
+        logMessage("player number created = " + to_string(playerNumber));
+
+        cout << "Запам'ятайте це число: " + to_string(playerNumber)<< endl;
+        cin.ignore();
+        cin.get();
+        
+        // GAME LOOP
+        bool isCorrectAnswer = true;
+            while(isCorrectAnswer) {
+                int playerTask; // Змінна для завдання гравцю (ВИПАДКОВЕ ЧИСЛО)
+                char actionsList[] = {'+', '-', '*', '/'}; // Масив з діями
+                int randomAction = rand() % 4; // Випадкова дія (з масиву)
+                if (randomAction == 2){
+                    playerTask = rand() % 5 + 1; //TODO: ПЕРЕВІРКА НА ДІЛЕННЯ НАЦІЛО
+                } else if (randomAction == 3){
+                    playerTask = rand() % 5 + 1;
+                } else if (randomAction == 0 || randomAction == 1){
+                    playerTask = rand() % 100 + 1;
+                }
+                cout << actionsList[randomAction] << playerTask << endl; // РОЗГЛЯНУТО ЛИШЕ ДОДАВАННЯ І ВІДНІМАННЯ
+                cout << "Введіть відповідь: \n";
+                int suggestAnswer; // Відповідь гравця
+                int correctAnswer; // Правильна відповідь
+                switch (randomAction) {
+                    case 0: // Додавання
+                        correctAnswer = playerNumber + playerTask;
+                        break;
+                    case 1: // Віднімання
+                        correctAnswer = playerNumber - playerTask;
+                        break;
+                    case 2: // Множення
+                        correctAnswer = playerNumber * playerTask;
+                        break;
+                    case 3: // Ділення
+                        correctAnswer = playerNumber / playerTask;
+                        break;
+                }
+                logMessage("correct answer: " + to_string(correctAnswer));
+                cin >> suggestAnswer;
+                if (suggestAnswer == correctAnswer) {
+                    cout << "Відповідь вірна!" << endl;
+                    score.GainScore(1);
+                    correctAnswer == playerNumber;
+                } else {
+                    cout << "Відповідь невірна!" << endl;
+                    isCorrectAnswer = false;
+                }
+            };
+
+        cout << "Кінець. Рахунок гравця: " << score.gameScore << endl;
+        cout << "Продовжити грати? (q - закінчити, будь-яка інша клавіша - продовжити): ";
+        cin >> choice;
+
+        if (tolower(choice) == 'q') {
+            continueGame = false;
+        }
+    }
+
     return 0;
-}
-
-void gamePrepare() { // Оголошення функції gamePrepare
-    // SEED
-    int seed = time(0); // Задаємо значенню seed значення часу.
-    srand(seed); // Зерно для генерації випадкових чисел.
-    logMessage("random seed = " + to_string(seed)); // Виводимо випадкове зерно.
-
-    // SCORE PREPARE
-    PlayerScore score; // Створюємо об'єкт score класу PlayerScore, який містить рахунок гравця. 
-    logMessage("game score initialized: " + to_string(score.gameScore));
-
-    //FIRST NUMBER PREPARE
-    int playerNumber = rand() % 100 + 1; // Створює число для гравця, яке спочатку від 0 до 99(включно), а потім додається 1, аби не було 0
-    logMessage("player number created = " + to_string(playerNumber));
-
-    // NUMBERS ARRAY
-    int const arraySize = 100;
-    int numbersArray[arraySize];
-
-    for (int i = 0; i < arraySize; i++) {
-        numbersArray[i] = rand() % 100;
-        logMessage("number created in array at index " + to_string(i) + ": " + to_string(numbersArray[i]));
-    };
-
-    logArray(numbersArray, arraySize);
 }
 
 void logArray(int array[], int arraySize) {
