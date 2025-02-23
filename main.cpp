@@ -55,20 +55,20 @@ void gamePrepare() { // Оголошення функції gamePrepare
     PlayerScore score; // Створюємо об'єкт score класу PlayerScore, який містить рахунок гравця. 
     logMessage("game score initialized: " + to_string(score.gameScore));
 
-    //FIRST NUMBER PREPARE
+    // FIRST NUMBER PREPARE
     int playerNumber = rand() % 100 + 1; // Створює число для гравця, яке спочатку від 0 до 99(включно), а потім додається 1, аби не було 0
     logMessage("player number created = " + to_string(playerNumber));
 
     // NUMBERS ARRAY
-    int const arraySize = 100;
-    int numbersArray[arraySize];
+    // int const arraySize = 100;
+    // int numbersArray[arraySize];
 
-    for (int i = 0; i < arraySize; i++) {
-        numbersArray[i] = rand() % 100;
-        logMessage("number created in array at index " + to_string(i) + ": " + to_string(numbersArray[i]));
-    };
+    // for (int i = 0; i < arraySize; i++) {
+    //    numbersArray[i] = rand() % 100;
+    //    logMessage("number created in array at index " + to_string(i) + ": " + to_string(numbersArray[i]));
+    //};
 
-    logArray(numbersArray, arraySize);
+    //logArray(numbersArray, arraySize);
 }
 
 void logArray(int array[], int arraySize) {
