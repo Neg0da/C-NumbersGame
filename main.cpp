@@ -53,13 +53,13 @@ int main() {
                 char actionsList[] = {'+', '-', '*', '/'}; // Масив з діями
                 int randomAction = rand() % 4; // Випадкова дія (з масиву)
                 if (randomAction == 0 || randomAction == 1){
-                    playerTask = rand() % 100 + 1;
+                    playerTask = rand() % 20 + 1;
                 } else if (randomAction == 2){
-                    playerTask = rand() % 5 + 1;
+                    playerTask = rand() % 3 + 1;
                 } else if (randomAction == 3){
-                    playerTask = rand() % 5 + 1;
+                    playerTask = rand() % 3 + 2;
                     while (playerNumber % playerTask != 0) {
-                        playerTask = rand() % 5 + 1;
+                        playerTask = rand() % 5 + 2;
                     }
                 }
                 cout << actionsList[randomAction] << playerTask << endl; // РОЗГЛЯНУТО ЛИШЕ ДОДАВАННЯ І ВІДНІМАННЯ
@@ -84,9 +84,10 @@ int main() {
                 cin >> suggestAnswer;
                 if (suggestAnswer == correctAnswer) {
                     cout << "Відповідь вірна!" << endl;
-                    score.GainScore(1);
-                    logMessage("gained score: " + to_string(score.gameScore));
-                    correctAnswer == playerNumber;
+                    int scoreScale = correctAnswer % 10 + randomAction;
+                    score.GainScore(scoreScale);
+                    logMessage("new score: " + to_string(score.gameScore));
+                    playerNumber = correctAnswer;
                 } else {
                     cout << "Відповідь невірна!" << endl;
                     isCorrectAnswer = false;
