@@ -19,7 +19,7 @@ class PlayerScore { // Клас для рахунку гравця
         void GainScore(int addScore) { // Функція для додавання 
             gameScore += addScore;
         }
-};
+}
 
 int main() {
     while (continueGame) {
@@ -43,12 +43,12 @@ int main() {
         logMessage("player number created = " + to_string(playerNumber));
 
         cout << "Запам'ятайте це число: " + to_string(playerNumber)<< endl;
-        cin.ignore();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cin.get();
         
         // GAME LOOP
-        bool isCorrectAnswer = true;
-            while(isCorrectAnswer) {
+        bool gameInProgress = true;
+            while(gameInProgress) {
                 int playerTask; // Змінна для завдання гравцю (ВИПАДКОВЕ ЧИСЛО)
                 char actionsList[] = {'+', '-', '*', '/'}; // Масив з діями
                 int randomAction = rand() % 4; // Випадкова дія (з масиву)
@@ -58,11 +58,11 @@ int main() {
                     playerTask = rand() % 3 + 1;
                 } else if (randomAction == 3){
                     playerTask = rand() % 3 + 2;
-                    while (playerNumber % playerTask != 0) {
+                    while (playerTask == 0 || playerNumber % playerTask != 0) {
                         playerTask = rand() % 5 + 2;
                     }
                 }
-                cout << actionsList[randomAction] << playerTask << endl; // РОЗГЛЯНУТО ЛИШЕ ДОДАВАННЯ І ВІДНІМАННЯ
+                cout << actionsList[randomAction] << playerTask << endl; // Випадкова дія з масиву
                 cout << "Введіть відповідь: \n";
                 int suggestAnswer; // Відповідь гравця
                 int correctAnswer; // Правильна відповідь
@@ -90,7 +90,7 @@ int main() {
                     playerNumber = correctAnswer;
                 } else {
                     cout << "Відповідь невірна!" << endl;
-                    isCorrectAnswer = false;
+                    gameInProgress = false;
                 }
             };
 
