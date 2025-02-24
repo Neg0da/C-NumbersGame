@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cctype>
+#include <limits>
 
 using namespace std;
 
@@ -10,6 +11,7 @@ bool continueGame = true;
 
 void logArray(int array[], int arraySize); // Декларація функції logArray
 void logMessage(const string & message); // Декларація функції logMessage
+void clearConsole(); // Декларація очищення консолі
 
 class PlayerScore { // Клас для рахунку гравця
     public:
@@ -19,7 +21,7 @@ class PlayerScore { // Клас для рахунку гравця
         void GainScore(int addScore) { // Функція для додавання 
             gameScore += addScore;
         }
-}
+};
 
 int main() {
     while (continueGame) {
@@ -62,6 +64,8 @@ int main() {
                         playerTask = rand() % 5 + 2;
                     }
                 }
+                
+                clearConsole();
                 cout << actionsList[randomAction] << playerTask << endl; // Випадкова дія з масиву
                 cout << "Введіть відповідь: \n";
                 int suggestAnswer; // Відповідь гравця
@@ -104,6 +108,10 @@ int main() {
     }
 
     return 0;
+}
+
+void clearConsole() {
+    cout << "\033[2J\033[H";  // Очищення екрану та переміщення курсора у верхній лівий кут
 }
 
 void logArray(int array[], int arraySize) {
